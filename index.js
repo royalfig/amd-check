@@ -1,7 +1,4 @@
 require("dotenv").config();
-const express = require("express");
-const app = express();
-const port = 3000;
 
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -67,7 +64,3 @@ setInterval(async () => {
     );
   }
 }, 3000);
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
