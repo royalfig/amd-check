@@ -53,21 +53,21 @@ async function getAmd() {
   }
 }
 
-setInterval(async () => {
-  const result = await getAmd();
-  if (result) {
-    smtpTransport.sendMail(
-      { ...mailOptions, text: JSON.stringify(result) },
-      function (error, response) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Successfully sent email.");
-        }
-      }
-    );
-  }
-}, 3000);
+// setInterval(async () => {
+//   const result = await getAmd();
+//   if (result) {
+//     smtpTransport.sendMail(
+//       { ...mailOptions, text: JSON.stringify(result) },
+//       function (error, response) {
+//         if (error) {
+//           console.log(error);
+//         } else {
+//           console.log("Successfully sent email.");
+//         }
+//       }
+//     );
+//   }
+// }, 3000);
 
 app.get("/", async (req, res) => {
   const result = await getAmd();
