@@ -46,7 +46,7 @@ function parseHtml(data) {
     const stock = $(".shop-links", el).text();
     const link =
       "https://www.amd.com/" + $(".shop-full-specs-link > a", el).attr("href");
-    const isInStockGpu = /Graphics/.test(gpu) && /Out of Stock/.test(stock);
+    const isInStockGpu = /Graphics/.test(gpu) && !/Out of Stock/.test(stock);
 
     if (isInStockGpu) {
       elArr.push({ gpu, link });
