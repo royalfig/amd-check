@@ -24,10 +24,14 @@ const mailOptions = {
 };
 
 async function scrapeAmd() {
-  const { data } = await axios.get(
-    "https://www.amd.com/en/direct-buy/products/us"
-  );
-  return data;
+  try {
+    const { data } = await axios.get(
+      "https://www.amd.com/en/direct-buy/products/us"
+    );
+    return data;
+  } catch (err) {
+    throw Error(err);
+  }
 }
 
 function parseHtml(data) {
