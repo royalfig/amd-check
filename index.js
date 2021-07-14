@@ -1,4 +1,7 @@
 require("dotenv").config();
+const express = require("express");
+const app = express();
+const port = 3000;
 
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -34,6 +37,7 @@ async function getAmd() {
     const stock = $(".shop-links", el).text();
     const link =
       "https://www.amd.com/" + $(".shop-full-specs-link > a", el).attr("href");
+    console.log({ gpu, link: stock });
     const isInStockGpu = /Graphics/.test(gpu) && !/Out of Stock/.test(stock);
 
     if (isInStockGpu) {
@@ -44,7 +48,7 @@ async function getAmd() {
   if (elArr.length) {
     return elArr;
   } else {
-    console.log("Out of stock, out of mind");
+    console.log("nil");
     return null;
   }
 }
@@ -64,3 +68,12 @@ setInterval(async () => {
     );
   }
 }, 3000);
+
+app.get("/", async (req, res) => {
+  const result = await getAmd();
+  res.send(result);
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
