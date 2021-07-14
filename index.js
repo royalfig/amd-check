@@ -71,9 +71,10 @@ async function getAmd() {
 
 app.get("/", async (req, res) => {
   const result = await getAmd();
-  res.json(result);
+  console.log(result);
+  res.send("ok");
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Server is running on ${port}`);
 });
