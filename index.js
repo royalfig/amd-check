@@ -24,6 +24,7 @@ const mailOptions = {
 };
 
 async function scrapeAmd() {
+  console.log("fetch amd");
   try {
     const { data } = await axios.get(
       "https://www.amd.com/en/direct-buy/products/us"
