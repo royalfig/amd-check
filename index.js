@@ -71,7 +71,7 @@ async function getAmd() {
 
 app.get("/", async (req, res) => {
   // const result = await getAmd();
-  console.log(result);
+
   res.send("ok");
 });
 
