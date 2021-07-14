@@ -47,7 +47,6 @@ function parseHtml(data) {
     const stock = $(".shop-links", el).text();
     const link =
       "https://www.amd.com/" + $(".shop-full-specs-link > a", el).attr("href");
-    console.log({ gpu, link: stock });
     const isInStockGpu = /Graphics/.test(gpu) && !/Out of Stock/.test(stock);
 
     if (isInStockGpu) {
@@ -58,31 +57,31 @@ function parseHtml(data) {
   if (elArr.length) {
     return elArr;
   } else {
-    console.log("nil");
+
     return null;
   }
 }
 
-// setInterval(async () => {
-//   const result = await getAmd();
-//   if (result) {
-//     smtpTransport.sendMail(
-//       { ...mailOptions, text: JSON.stringify(result) },
-//       function (error, response) {
-//         if (error) {
-//           console.log(error);
-//         } else {
-//           console.log("Successfully sent email.");
-//         }
-//       }
-//     );
-//   }
-// }, 3000);
+setInterval(async () => {
+  const data = await scrapeAmd();
+  const parsed = parseHtml(data);
+  if (parsed) {
+    smtpTransport.sendMail(
+      { ...mailOptions, text: JSON.stringify(result) },
+      function (error, response) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Successfully sent email.");
+        }
+      }
+    );
+  }
+}, 3000);
 
 app.get("/", async (req, res) => {
   const data = await scrapeAmd();
   const parsed = parseHtml(data);
-  console.log(parsed);
   res.send(JSON.stringify(parsed));
 });
 
