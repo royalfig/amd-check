@@ -23,10 +23,14 @@ const mailOptions = {
   subject: "AMD",
 };
 
-async function getAmd() {
+async function scrapeAmd() {
   const { data } = await axios.get(
     "https://www.amd.com/en/direct-buy/products/us"
   );
+  return data;
+}
+
+function parseHtml(data) {
   const $ = cheerio.load(data);
   const els = $(".views-row");
 
@@ -70,9 +74,10 @@ async function getAmd() {
 // }, 3000);
 
 app.get("/", async (req, res) => {
-  // const result = await getAmd();
-
-  res.send("ok");
+  const data = await scrapeAmd();
+  const parsed = parseHtml(data);
+  console.log(parsed);
+  res.send(JSON.stringify(parsed));
 });
 
 app.listen(port, () => {
