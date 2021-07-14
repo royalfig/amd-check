@@ -20,11 +20,10 @@ const smtpTransport = nodemailer.createTransport(mg(mailgunAuth));
 const mailOptions = {
   from: "amd@mg.imkant.com",
   to: "ryan.feigenbaum@gmail.com",
-  subject: "AMD",
+  subject: "RYAN!!! AMD GPUs are now available",
 };
 
 async function scrapeAmd() {
-  console.log("fetch amd");
   try {
     const { data } = await axios.get(
       "https://www.amd.com/en/direct-buy/products/us"
@@ -47,7 +46,7 @@ function parseHtml(data) {
     const stock = $(".shop-links", el).text();
     const link =
       "https://www.amd.com/" + $(".shop-full-specs-link > a", el).attr("href");
-    const isInStockGpu = /Graphics/.test(gpu) && !/Out of Stock/.test(stock);
+    const isInStockGpu = /Graphics/.test(gpu) && /Out of Stock/.test(stock);
 
     if (isInStockGpu) {
       elArr.push({ gpu, link });
@@ -57,22 +56,25 @@ function parseHtml(data) {
   if (elArr.length) {
     return elArr;
   } else {
-
     return null;
   }
 }
 
-setInterval(async () => {
+const interval = setInterval(async () => {
   const data = await scrapeAmd();
   const parsed = parseHtml(data);
   if (parsed) {
+    const html = `<ul>${parsed.map(
+      (el) => "<li>" + el.gpu + "(" + el.link + ")</li>"
+    )}</ul>`;
     smtpTransport.sendMail(
-      { ...mailOptions, text: JSON.stringify(result) },
+      { ...mailOptions, html },
       function (error, response) {
         if (error) {
           console.log(error);
         } else {
           console.log("Successfully sent email.");
+          clearInterval(interval);
         }
       }
     );
