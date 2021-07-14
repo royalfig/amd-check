@@ -71,7 +71,7 @@ setInterval(async () => {
 
 app.get("/", async (req, res) => {
   const result = await getAmd();
-  res.send(result);
+  res.json(result);
 });
 
 app.listen(port, () => {
